@@ -2,9 +2,9 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from tensorflow.python.keras.metrics import MeanSquaredError
-from tensorflow.python.keras.models import load_model
-from tensorflow.python.keras.utils.generic_utils import register_keras_serializable
+import keras
+from keras.src.metrics import MeanSquaredError
+from keras.src.saving import register_keras_serializable
 
 
 #from tensorflow.keras.models import load_model
@@ -17,6 +17,7 @@ from tensorflow.python.keras.utils.generic_utils import register_keras_serializa
 # Registrar manualmente la función de pérdida antes de cargar los modelos
 
 
+
 @register_keras_serializable()
 class CustomMSE(MeanSquaredError):
     pass
@@ -27,9 +28,9 @@ custom_objects = {"mse": CustomMSE()}
 # ---------------------- CARGA DE DATOS Y MODELOS ----------------------
 st.success("Cargando modelos de recomendación...")
 models = {
-    "Red Neuronal Simple": load_model("models/modelo_nn_simple.h5", custom_objects=custom_objects, compile=False),
-    "Red Profunda": load_model("models/modelo_nn_profundo.h5", custom_objects=custom_objects, compile=False),
-    "Autoencoder": load_model("models/modelo_autoencoder.h5", custom_objects=custom_objects, compile=False),
+    "Red Neuronal Simple": keras.models.load_model("models/modelo_nn_simple.h5",custom_objects=custom_objects,  compile=False),
+    "Red Profunda": keras.models.load_model("models/modelo_nn_profundo.h5",custom_objects=custom_objects,  compile=False),
+    "Autoencoder": keras.models.load_model("models/modelo_autoencoder.h5",custom_objects=custom_objects,  compile=False),
 }
 
 
@@ -47,13 +48,13 @@ df = pd.read_csv("data/data_processed.csv")
 # Diccionario de mapeo de productos
 product_dict = dict(zip(df["productId"], df["name"]))
 
-# Cargar modelos
-st.success("Cargando modelos de recomendación...")
-models = {
-    "Red Neuronal Simple": load_model("models/modelo_nn_simple.h5"),
-    "Red Profunda": load_model("models/modelo_nn_profundo.h5"),
-    "Autoencoder": load_model("models/modelo_autoencoder.h5"),
-}
+# # Cargar modelos
+# st.success("Cargando modelos de recomendación...")
+# models = {
+#     "Red Neuronal Simple": keras.models.load_model("models/modelo_nn_simple.h5"),
+#     "Red Profunda": keras.models.load_model("models/modelo_nn_profundo.h5"),
+#     "Autoencoder": keras.models.load_model("models/modelo_autoencoder.h5"),
+# }
 
 # ---------------------- INTERFAZ EN STREAMLIT ----------------------
 st.title("🛍️ Sistema de Recomendación de Productos con IA")
@@ -68,7 +69,7 @@ if st.button("Obtener Recomendaciones"):
     model = models[selected_model]
 
     # Seleccionar productos aleatorios para predecir
-    productos_disponibles = np.array(df["productId_encoded"].unique())
+    productos_disponibles = np.array(df["productId"].unique())
     productos_prueba = np.random.choice(productos_disponibles, 10)
 
     # Hacer predicciones
