@@ -28,8 +28,8 @@ custom_objects = {"mse": CustomMSE()}
 # ---------------------- CARGA DE DATOS Y MODELOS ----------------------
 st.success("Cargando modelos de recomendación...")
 models = {
-    #"Red Neuronal Simple": keras.models.load_model("models/modelo_nn_simple.h5",custom_objects=custom_objects,  compile=False),
-    "Red Profunda": keras.models.load_model("models/modelo_nn_profundo.h5",custom_objects=custom_objects,  compile=False),
+    "Red Neuronal Simple": keras.models.load_model("models/modelo_nn_simple.h5",custom_objects=custom_objects,  compile=False),
+    #"Red Profunda": keras.models.load_model("models/modelo_nn_profundo.h5",custom_objects=custom_objects,  compile=False),
     #"Autoencoder": keras.models.load_model("models/modelo_autoencoder.h5",custom_objects=custom_objects,  compile=False),
 }
 
